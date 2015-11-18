@@ -15,9 +15,10 @@ app.config(['$routeProvider', function($routeProvider){
         });
 }]);
 
+
 app.controller('searchController', function($scope, getArticles){
     $scope.articleList = getArticles.get("paris");
-})
+});
 
 app.factory('getArticles', function($http){
     service={};
@@ -31,4 +32,22 @@ app.factory('getArticles', function($http){
         }
     });
     return service;
-})
+});
+
+app.factory('viewNy', function(){
+
+$http.get("http://api.nytimes.com/svc/semantic/v2/geocodes/query.json?name=Paris&api-key=c24f87cd1a530b710c48b2231f630d6c:11:73496093")
+    .success(function(response) {
+        $scope.articleData = response.results;
+    });
+});
+
+console.log(response.article);
+
+    var obj ={};
+            obj.setData = function(input1, input2){
+                this.input1 = input1; 
+                this.input2 = input2;
+
+
+
