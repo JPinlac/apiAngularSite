@@ -1,4 +1,4 @@
-var app = angular.module('awwApp', ['ngRoute','ui.bootstrap']);
+var app = angular.module('myApp', ['ngRoute','ui.bootstrap']);
 
 app.config(['$routeProvider', function($routeProvider){
     $routeProvider
@@ -14,3 +14,21 @@ app.config(['$routeProvider', function($routeProvider){
             redirectTo: '/'
         });
 }]);
+
+app.controller('searchController', function($scope, getArticles){
+    $scope.articleList = getArticles.get("paris");
+})
+
+app.factory('getArticles', function($http){
+    service={};
+    service.articleList=[];
+
+    service.get = function(searchTerm){
+        $http.get('https://www.reddit.com/r/aww.json').success(function(response){
+
+            console.log(response);
+            return articleList;
+        }
+    });
+    return service;
+}
