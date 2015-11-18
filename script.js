@@ -31,4 +31,4 @@ app.factory('getArticles', function($http){
         }
     });
     return service;
-}
+})
