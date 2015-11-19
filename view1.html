@@ -1,1 +1,7 @@
-<h3>Hi</h3>
+<input type='text' ng-model='searchTerm' placeholder='Search for article'>
+<button type='submit' ng-click="searchArticles(searchTerm)"></button>
+<div ng-repeat='article in articleList'>
+    <h4>{{article.title}}</h4>
+    <p>{{article.url}}</p>
+    <p>{{article.name}}</p>
+</div>
