@@ -1,0 +1,8 @@
+<input type='text' ng-model='searchTerm' placeholder='Search for article'>
+<button type='submit' ng-click="searchArticles(searchTerm)">Search</button>
+<div ng-repeat='article in articleList'>
+    <a href={{article.url}}>
+            
+        <h4>{{$index + 1 + ". "}} {{article.title}}</h4>
+    </a>
+</div>
