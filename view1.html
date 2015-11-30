@@ -1,7 +1,10 @@
-<input type='text' ng-model='searchTerm' placeholder='Search for article'>
-<button type='submit' ng-click="searchArticles(searchTerm)"></button>
-<div ng-repeat='article in articleList'>
-    <h4>{{article.title}}</h4>
-    <p>{{article.url}}</p>
-    <p>{{article.name}}</p>
+<input type='text' ng-model='searchTerm' placeholder='Search for genre'>
+<button type='submit' ng-click="searchSongs(searchTerm)">Search</button>
+<button type='submit' ng-click="printList()">Print List</button>
+<div ng-repeat='song in songList'>
+    <a href='{{song.url}}'>
+            
+        <h4>{{$index + 1 + ". "}} {{song.title}}</h4>
+    </a>
 </div>
+

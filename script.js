@@ -16,55 +16,50 @@ app.config(['$routeProvider', function($routeProvider){
 }]);
 
 
-app.controller('searchController', function($scope, getArticles, getGeoData){
-    $scope.service=getArticles
-    $scope.searchArticles = function(searchTerm){
-        getArticles.set(searchTerm);
+app.controller('searchController', function($scope, getSongs){
+    $scope.searchSongs = function(searchTerm){
+        getSongs.set(searchTerm);
     }
-    $scope.articleList = $scope.service.articleList;
+    $scope.songList = getSongs.songList;
+    $scope.printList = function(){
+        console.log(getSongs.songList);
+    }
 
-    // $scope.geoData = getGeoData.get("paris");
 });
 
-app.controller('savedController', function($scope, getArticles, getGeoData){
-    $scope.geoData = getGeoData.get("paris");
-});
 
-app.factory('getArticles', function($http){
+app.factory('getSongs', function($http){
     service={};
-    service.articleList=[];
-    function article(title,url){
+    service.songList=[{title:'butts', url:'butts.com'}];
+    function song(title,url){
         this.title = title;
         this.url = url;
     }
 
     service.set = function(searchTerm){
-        $http.get('http://api.nytimes.com/svc/search/v2/articlesearch.json?fq='+searchTerm+'&api-key=1aac169c69edc3e8bc34be81972e67e2:10:73496041').success(function(response){
-            if(service.articleList.length !== 0){
-                service.articleList=[];//using this the feed does not refresh, but stops array from increasing in size
-            }
-            for(var i = 0; i < 10; i++){
-                var newArticle = new article(
-                    response.response.docs[i].headline.main,
-                    response.response.docs[i].web_url);
-                service.articleList.push(newArticle);
-            }
-            console.log(service)
-        })
+        //format searchTerm to be usable in get request url
+        var q = '';
+        searchTerm = searchTerm.split(' ');
+        q = searchTerm[0];
+        for(var i = 1;i<searchTerm.length;i++){
+            q=q + '+'+searchTerm[i];
+        }
+
+        var date = new Date;
+        var year = date.getFullYear();
+        for(var j = 0; j < 10; j++){
+            //https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=50&order=viewCount&publishedAfter=2015-01-01T00%3A00%3A00Z&publishedBefore=2015-12-31T00%3A00%3A00Z&q=drum+and+bass&type=video&videoCategoryId=10&videoDuration=short&videoSyndicated=true&key=AIzaSyAcH5lbBeE0d_PovUz8XHtSj2dNvEzTauY
+            $http.get('https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=50&order=viewCount&publishedAfter='+(year-j)+'-01-01T00%3A00%3A00Z&publishedBefore='+(year-j)+'-12-31T00%3A00%3A00Z&q='+q+'&type=video&videoCategoryId=10&videoDuration=short&videoSyndicated=true&key=AIzaSyAcH5lbBeE0d_PovUz8XHtSj2dNvEzTauY').success(function(response){
+                console.log(j)
+                var rand = Math.floor(Math.random()*40)+10
+                var newSong = new song(response.items[rand].snippet.title, 'https://www.youtube.com/watch?v='+response.items[rand].id.videoId);
+                // service.songList[k]=newSong;
+                service.songList.push(newSong)
+            })
+        }
+        console.log(service.songList)
      };
-    console.log(service)
+
     return service;
 });
 
-app.factory('getGeoData', function($http){
-    service2={};
-
-    service2.get = function(searchTerm){
-        $http.get("http://api.nytimes.com/svc/semantic/v2/geocodes/query.json?name="+searchTerm+"&api-key=c24f87cd1a530b710c48b2231f630d6c:11:73496093").success(function(response){
-
-            console.log(response);
-            
-        })
-    };
-    return service2;
-});
