@@ -52,8 +52,8 @@ app.factory('getSongs', function($http){
                 console.log(response)
                 var rand = Math.floor(Math.random()*40)+10
                 var newSong = new song(response.items[rand].snippet.title, 'http://www.youtube.com/embed/'+response.items[rand].id.videoId);
-                service.songList[j]=newSong;
-                // service.songList.push(newSong)
+                // service.songList[k]=newSong;
+                service.songList.push(newSong)
             })
         }
         console.log(service.songList)
