@@ -48,13 +48,12 @@ app.factory('getSongs', function($http){
         var date = new Date;
         var year = date.getFullYear();
         for(var j = 0; j < 10; j++){
-            //https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=50&order=viewCount&publishedAfter=2015-01-01T00%3A00%3A00Z&publishedBefore=2015-12-31T00%3A00%3A00Z&q=drum+and+bass&type=video&videoCategoryId=10&videoDuration=short&videoSyndicated=true&key=AIzaSyAcH5lbBeE0d_PovUz8XHtSj2dNvEzTauY
             $http.get('https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=50&order=viewCount&publishedAfter='+(year-j)+'-01-01T00%3A00%3A00Z&publishedBefore='+(year-j)+'-12-31T00%3A00%3A00Z&q='+q+'&type=video&videoCategoryId=10&videoDuration=short&videoSyndicated=true&key=AIzaSyAcH5lbBeE0d_PovUz8XHtSj2dNvEzTauY').success(function(response){
-                console.log(j)
+                console.log(response)
                 var rand = Math.floor(Math.random()*40)+10
                 var newSong = new song(response.items[rand].snippet.title, 'http://www.youtube.com/embed/'+response.items[rand].id.videoId);
-                // service.songList[k]=newSong;
-                service.songList.push(newSong)
+                service.songList[j]=newSong;
+                // service.songList.push(newSong)
             })
         }
         console.log(service.songList)
