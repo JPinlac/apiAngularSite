@@ -30,7 +30,7 @@ app.controller('searchController', function($scope, getSongs){
 
 app.factory('getSongs', function($http){
     service={};
-    service.songList=[{title:'butts', url:'butts.com'}];
+    service.songList=[];
     function song(title,url){
         this.title = title;
         this.url = url;
@@ -52,7 +52,7 @@ app.factory('getSongs', function($http){
             $http.get('https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=50&order=viewCount&publishedAfter='+(year-j)+'-01-01T00%3A00%3A00Z&publishedBefore='+(year-j)+'-12-31T00%3A00%3A00Z&q='+q+'&type=video&videoCategoryId=10&videoDuration=short&videoSyndicated=true&key=AIzaSyAcH5lbBeE0d_PovUz8XHtSj2dNvEzTauY').success(function(response){
                 console.log(j)
                 var rand = Math.floor(Math.random()*40)+10
-                var newSong = new song(response.items[rand].snippet.title, 'https://www.youtube.com/watch?v='+response.items[rand].id.videoId);
+                var newSong = new song(response.items[rand].snippet.title, 'http://www.youtube.com/embed/'+response.items[rand].id.videoId);
                 // service.songList[k]=newSong;
                 service.songList.push(newSong)
             })
